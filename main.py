@@ -1,66 +1,32 @@
-#!/usr/bin/env python
-# pylint: disable=C0116,W0613
+from multiprocessing import Process
+from time import sleep
 
-"""
-Simple Bot to handle small home automation tasks.
-Greets new users & keeps track of which chats the bot is in.
-Usage:
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
+import http_server
 
-import logging
-
-from telegram import Update
-from telegram.ext import (
-    Updater,
-    CommandHandler,
-    CallbackContext,
-)
-
-import config
-from decorators import require_allowed_user
-
-# Enable logging
-from toggle import Toggle
-
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
-
-logger = logging.getLogger(__name__)
+import chatbot
 
 
-@require_allowed_user
-def toggle(update: Update, context: CallbackContext):
-    if not context or not context.args or len(context.args) == 0:
-        update.effective_message.reply_text("Context needed")
-
-    try:
-        toggle_obj = Toggle(context.args[0])
-    except AttributeError as e:
-        update.effective_message.reply_text(str(e))
-        return
-
-    update.effective_message.reply_text(toggle_obj.press())
+def spawn_chat_bot():
+    chatbot_process = Process(target=chatbot.main, args=())
+    chatbot_process.start()
+    return chatbot_process
 
 
-def main() -> None:
-    """Start the bot."""
-    updater = Updater(config.token())
-
-    dispatcher = updater.dispatcher
-
-    # Garage handling
-    dispatcher.add_handler(CommandHandler("toggle", toggle))
-    dispatcher.add_handler(CommandHandler("tg", toggle))
-
-    # Start the Bot
-    updater.bot.send_message(chat_id=config.chat_id(), text="Hello world")
-
-    updater.start_polling(allowed_updates=Update.ALL_TYPES)
-    updater.idle()
+def spawn_http_server():
+    http_server_process = Process(target=http_server.main, args=())
+    http_server_process.start()
+    return http_server_process
 
 
 if __name__ == "__main__":
-    main()
+    http_server = spawn_http_server()
+    chatbot = spawn_chat_bot()
+
+    while True:
+        if not http_server.is_alive():
+            spawn_http_server()
+        if not chatbot.is_alive():
+            spawn_chat_bot()
+
+        sleep(5)
+

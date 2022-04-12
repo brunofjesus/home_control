@@ -15,3 +15,11 @@ def token() -> str:
 
 def chat_id() -> str:
     return os.getenv("CHAT_ID")
+
+
+def host() -> str:
+    return os.getenv("HOST")
+
+
+def port() -> int:
+    return int(os.getenv("PORT"))
