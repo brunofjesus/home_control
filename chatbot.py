@@ -22,7 +22,7 @@ import config
 from decorators import require_allowed_user
 
 # Enable logging
-from toggle import Toggle
+from toggle import toggle_factory
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -37,12 +37,12 @@ def toggle(update: Update, context: CallbackContext):
         update.effective_message.reply_text("Context needed")
 
     try:
-        toggle_obj = Toggle(context.args[0])
+        toggle_obj = toggle_factory.create(context.args[0])
     except AttributeError as e:
         update.effective_message.reply_text(str(e))
         return
 
-    update.effective_message.reply_text(toggle_obj.press())
+    update.effective_message.reply_text(toggle_obj.execute(context.args[1:]))
 
 
 def main() -> None:

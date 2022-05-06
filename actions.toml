@@ -1,6 +1,9 @@
-[[toggles]]
-id = "garage"
+[toggles]
+[toggles.door]
 type = "press_release"
 duration = 1
-gpio = -1
+pin = 11
 
+[toggles.lamp]
+type = "press"
+pin = 15
