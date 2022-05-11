@@ -1,6 +1,6 @@
 # Home Control
 
-**This is a WIP, it's usable but it might have some flaws**
+**This is a WIP, it's usable but it might have some flaws, check the TODO.MD for more info**
 
 ---
 
