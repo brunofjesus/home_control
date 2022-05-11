@@ -1,0 +1,4 @@
+- Decentralization (Allow multiple PIs running home_control)
+  - Call actions via HTTP requests (/action/toggle/<toggle_name>/<toggle_command>)
+  - Create action to call HTTP endpoint instead of PIN to allow decentralization
+  - Disable chatbot via `ENV` variable (for secondary instances)
