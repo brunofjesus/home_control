@@ -1,6 +1,8 @@
 # Home Control
 
-** This is a WIP, it's usable but it might have some flaws**
+**This is a WIP, it's usable but it might have some flaws**
+
+---
 
 Control your appliances with your Raspberry PI via Telegram.
 
@@ -52,20 +54,14 @@ cp .env.example .env
  - Get the `chat_id` for the Telegram group you just created
    - Send a message to the group using your account
    - Open the following link in the browser `https://api.telegram.org/bot**YOUR_BOT_TOKEN**/getUpdates`
-   - In the response you should see a `.."chat":{"id":-XXXXXXXX,..`, copy the number (including the -) and put it in the `.env` file, like this:
-
-     ```sh
-	...
-	CHAT_ID=-302000453
-	...
-     ```
+   - In the response you should see a `.."chat":{"id":-XXXXXXXX,..`, copy the number (including the -) and put it in the `.env` file under `CHAT_ID`
 
 ### 3 - Actions configuration
 
  - Copy the `actions.toml.example` as `actions.toml`
  - Configure the desired actions
 
-** The example action is something like this: **
+**The example action.toml is something like this:**
 ```toml
 [toggles]
 [toggles.door]
@@ -78,17 +74,19 @@ type = "press"
 pin = 15
 ```
 
-** press_release **
+**press_release**
+
 The `press_release` type puts the specified `pin` on `HIGH` during the specified `duration` in seconds.
 To trigger it call the command `/tg door` on the chat.
 
-** press **
+**press**
+
 Makes the specified `pin` `HIGH` or `LOW` depending on input.
 
  - Turn on: `/tg lamp on`
  - Turn off: `/tg lamp off`
 
-# 4 - Event notifications
+### 4 - Event notifications
 
 To send notifications make a `POST` request to `http://<HOST>:<PORT>/event/<item>/<value>`
 
