@@ -1,3 +1,2 @@
 - Decentralization (Allow multiple PIs running home_control)
-  - Create action to call HTTP endpoint instead of PIN to allow decentralization
   - Disable chatbot via `ENV` variable (for secondary instances)
