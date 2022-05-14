@@ -1,5 +1,6 @@
 import toml
 
+from toggle.http_toggle import HttpToggle
 from toggle.press_release_toggle import PressReleaseToggle
 from toggle.press_toggle import PressToggle
 
@@ -14,5 +15,7 @@ def create(id):
         return PressReleaseToggle(id, toggle['pin'], toggle['duration'])
     elif toggle['type'] == 'press':
         return PressToggle(id, toggle['pin'])
+    elif toggle['type'] == 'http':
+        return HttpToggle(id, toggle['method'], toggle['url'])
     else:
         raise AttributeError("type {} unknown".format(toggle['type']))
